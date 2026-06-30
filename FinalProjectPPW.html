@@ -209,23 +209,24 @@
     <!-- JavaScript Data & Aplikasi -->
     <script>
         // 1. DATABASE PRODUK (Array of Objects) - Kamu bisa tambah/edit produk di sini
-        const productsData = [
-            {
-                id: "p1",
-                brand: "Nike",
-                name: "Air Max Running Black",
-                size: "42 (UK 8.5)",
-                insole: "26.5 cm",
-                box: "Replace Box Nike",
-                minus: "Lecet halus pada outsole bawah (cek foto)",
-                condition: "Kondisi 9/10",
-                badgeClass: "bg-success",
-                price: 450000,
-                images: [
-                    "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=500",
-                    "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=500",
-                    "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500"
-                ]
+       const productsData = [
+    {
+        id: "p1",
+        brand: "Nike",
+        name: "Air Max Running Black",
+        size: "42 (UK 8.5)",
+        insole: "26.5 cm",
+        box: "Replace Box Nike",
+        minus: "Lecet halus pada outsole bawah (cek foto)",
+        condition: "Kondisi 9/10",
+        badgeClass: "bg-success",
+        price: 450000,
+        images: [
+            "image/s1.jpeg",
+            "image/s2.jpeg"
+        ]
+    
+
             },
             {
                 id: "p2",
@@ -239,8 +240,8 @@
                 badgeClass: "bg-success",
                 price: 320000,
                 images: [
-                    "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=500",
-                    "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=500"
+                    "image/s3.jpeg",
+                    "image/s2.jpeg"
                 ]
             },
             {
@@ -255,8 +256,8 @@
                 badgeClass: "bg-warning text-dark",
                 price: 380000,
                 images: [
-                    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500",
-                    "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=500"
+                    "image/s4.jpeg",
+                    "image/s1.jpeg"
                 ]
             },
             {
@@ -271,16 +272,16 @@
                 badgeClass: "bg-success",
                 price: 550000,
                 images: [
-                    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500",
-                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500"
+                    "image/s5.jpeg",
+                    "image/s3.jpeg"
                 ]
             }
         ];
 
-        // Nomor WhatsApp Toko (Ganti dengan nomor aslimu)
+        
         const WA_NUMBER = "6281234567890";
 
-        // 2. FUNGSI UNTUK MERENDER KATALOG PRODUK DI HOME
+        
         function renderKatalog() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -307,7 +308,7 @@
             });
         }
 
-        // 3. FUNGSI NAVIGASI HALAMAN (Pindah Halaman Tanpa Reload)
+        
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
@@ -357,27 +358,34 @@
             showPage('detailPage');
         }
 
-        function addToCartAndGo() {
-            if (!selectedProduct) return;
+        function addProductToCart(product, redirect = false) {
+            if (!product) return;
 
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const existingItem = cart.find(item => item.id === selectedProduct.id);
+            const existingItem = cart.find(item => item.id === product.id);
 
             if (existingItem) {
                 existingItem.quantity = (existingItem.quantity || 1) + 1;
             } else {
                 cart.push({
-                    id: selectedProduct.id,
-                    name: selectedProduct.name,
-                    brand: selectedProduct.brand,
-                    price: selectedProduct.price,
-                    img: selectedProduct.images[0],
+                    id: product.id,
+                    name: product.name,
+                    brand: product.brand,
+                    price: product.price,
+                    img: product.images[0],
                     quantity: 1
                 });
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
-            window.location.href = 'cart.html';
+
+            if (redirect) {
+                window.location.href = 'cart.html';
+            }
+        }
+
+        function addToCartAndGo() {
+            addProductToCart(selectedProduct, true);
         }
 
         // Fungsi mengganti gambar utama saat thumbnail diklik
