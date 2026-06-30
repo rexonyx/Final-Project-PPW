@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecondKick - Thrift Sepatu Branded</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200') no-repeat center center/cover;
+            padding: 100px 0;
+        }
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+        }
+        .badge-condition {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+        }
+        .product-img {
+            height: 250px;
+            object-fit: cover;
+        }
+        .detail-main-img {
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .thumbnail-img {
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: opacity 0.2s;
+        }
+        .thumbnail-img:hover {
+            opacity: 0.8;
+        }
+        /* Transisi halaman sederhana */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="#" onclick="showPage('homePage')">Second<span class="text-warning">Kick</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('homePage')">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('homePage'); setTimeout(() => document.getElementById('katalog').scrollIntoView(), 100)">Katalog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HALAMAN HOME ================= -->
+    <div id="homePage" class="page active">
+        <!-- Hero Section -->
+        <header class="hero-section text-center text-white">
+            <div class="container py-5">
+                <h1 class="display-4 fw-bold">Sikat Sepatu Branded, Harga Sandal!</h1>
+                <p class="lead mb-4">100% Original thrifted sneakers. Sudah dicuci, disinfektan, dan siap diajak nongkrong.</p>
+                <a href="#katalog" class="btn btn-warning btn-lg fw-bold text-uppercase px-4">Lihat Koleksi</a>
+            </div>
+        </header>
+
+        <!-- Main Content / Katalog -->
+        <main class="container my-5" id="katalog">
+            <div class="row g-3 mb-5 justify-content-between align-items-center">
+                <div class="col-md-4">
+                    <h2 class="fw-bold m-0">Koleksi Terkini</h2>
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-2 justify-content-md-end">
+                        <div class="col-sm-6 col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Cari model sepatu...">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <select id="brandFilter" class="form-select">
+                                <option value="all">Semua Brand</option>
+                                <option value="nike">Nike</option>
+                                <option value="vans">Vans</option>
+                                <option value="adidas">Adidas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Produk -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
+                <!-- Produk akan di-render melalui JavaScript di bawah -->
+            </div>
+
+            <div id="noMatchMessage" class="text-center my-5 d-none">
+                <i class="bi bi-emoji-frown fs-1 text-muted"></i>
+                <p class="lead text-muted mt-2">Sepatu yang kamu cari tidak ditemukan.</p>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- ================= HALAMAN DETAIL PRODUK ================= -->
+    <div id="detailPage" class="page">
+        <div class="container my-5">
+            <!-- Tombol Kembali -->
+            <button class="btn btn-outline-dark mb-4" onclick="showPage('homePage')">
+                <i class="bi bi-arrow-left me-2"></i>Kembali ke Katalog
+            </button>
+
+            <div class="row g-5">
+                <!-- Bagian Gambar & Galeri -->
+                <div class="col-md-6">
+                    <div class="card border-0 bg-transparent">
+                        <img id="detailMainImg" src="" class="img-fluid detail-main-img w-100 shadow-sm" alt="Main Product Image">
+                        <!-- Galeri Gambar Kecil (Thumbnail) -->
+                        <div class="row g-2 mt-2" id="detailThumbnails">
+                            <!-- Thumbnail diisi otomatis via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Info Detail Sepatu -->
+                <div class="col-md-6">
+                    <span id="detailBrand" class="text-muted text-uppercase fw-bold small">BRAND</span>
+                    <h1 id="detailName" class="fw-bold text-dark my-2">Nama Produk Sepatu</h1>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span id="detailPrice" class="fs-3 fw-bold text-danger">Rp 0</span>
+                        <span id="detailBadge" class="badge bg-success fs-6">Kondisi</span>
+                    </div>
+                    
+                    <hr>
+
+                    <!-- Spesifikasi -->
+                    <h5 class="fw-bold text-dark mb-3">Spesifikasi Detail:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless text-secondary">
+                            <tr>
+                                <th style="width: 140px;">Ukuran (Size)</th>
+                                <td>: <span id="detailSize" class="text-dark fw-semibold">42</span></td>
+                            </tr>
+                            <tr>
+                                <th>Insole (Panjang)</th>
+                                <td>: <span id="detailInsole" class="text-dark fw-semibold">26.5 cm</span></td>
+                            </tr>
+                            <tr>
+                                <th>Kelengkapan</th>
+                                <td>: <span id="detailBox" class="text-dark">Replace Box</span></td>
+                            </tr>
+                            <tr>
+                                <th>Minus / Defect</th>
+                                <td>: <span id="detailMinus" class="badge bg-secondary-subtle text-secondary">Aman, lecet pemakaian wajar</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card bg-warning-subtle text-warning-tight p-3 my-4 border-0 rounded-3">
+                        <i class="bi bi-info-circle-fill me-2"></i><strong>Catatan Thrift:</strong> Barang hanya ada 1 pasang (Siapa cepat dia dapat). Sudah dicuci dan disinfektan dengan bersih secara profesional!
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="d-grid gap-2">
+                        <button id="detailCartBtn" type="button" class="btn btn-success btn-lg py-3 fw-bold" onclick="addToCartAndGo()">
+                            <i class="bi bi-cart-plus me-2"></i>Tambah ke Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="m-0">&copy; 2026 SecondKick Store. All Rights Reserved.</p>
+            <p class="text-muted small m-0 mt-1">Sertakan bukti screenshot saat memesan via WhatsApp.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript Data & Aplikasi -->
+    <script>
+        // 1. DATABASE PRODUK (Array of Objects) - Kamu bisa tambah/edit produk di sini
+        const productsData = [
+            {
+                id: "p1",
+                brand: "Nike",
+                name: "Air Max Running Black",
+                size: "42 (UK 8.5)",
+                insole: "26.5 cm",
+                box: "Replace Box Nike",
+                minus: "Lecet halus pada outsole bawah (cek foto)",
+                condition: "Kondisi 9/10",
+                badgeClass: "bg-success",
+                price: 450000,
+                images: [
+                    "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=500",
+                    "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=500",
+                    "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500"
+                ]
+            },
+            {
+                id: "p2",
+                brand: "Vans",
+                name: "Vans Old Skool Classic",
+                size: "40 (UK 7)",
+                insole: "25.5 cm",
+                box: "Original Box (Slightly Damaged)",
+                minus: "Suede agak berbulu tipis karena pemakaian",
+                condition: "Kondisi 9.5/10",
+                badgeClass: "bg-success",
+                price: 320000,
+                images: [
+                    "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=500",
+                    "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=500"
+                ]
+            },
+            {
+                id: "p3",
+                brand: "Adidas",
+                name: "Adidas Superstar White",
+                size: "41 (UK 7.5)",
+                insole: "26.0 cm",
+                box: "No Box (Replace Box Polos)",
+                minus: "No Minus, Kondisi Sangat Mulus",
+                condition: "Like New",
+                badgeClass: "bg-warning text-dark",
+                price: 380000,
+                images: [
+                    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500",
+                    "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=500"
+                ]
+            },
+            {
+                id: "p4",
+                brand: "Nike",
+                name: "Nike Dunk Low Lime",
+                size: "43 (UK 9.5)",
+                insole: "27.5 cm",
+                box: "Replace Box Polos",
+                minus: "Insole dalam bawaan diganti, selebihnya aman",
+                condition: "Kondisi 8.5/10",
+                badgeClass: "bg-success",
+                price: 550000,
+                images: [
+                    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500",
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500"
+                ]
+            }
+        ];
+
+        // Nomor WhatsApp Toko (Ganti dengan nomor aslimu)
+        const WA_NUMBER = "6281234567890";
+
+        // 2. FUNGSI UNTUK MERENDER KATALOG PRODUK DI HOME
+        function renderKatalog() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            productsData.forEach(p => {
+                const cardHTML = `
+                    <div class="col product-item" data-brand="${p.brand.toLowerCase()}">
+                        <div class="card h-100 border-0 shadow-sm product-card position-relative" onclick="openDetailPage('${p.id}')">
+                            <span class="badge ${p.badgeClass} badge-condition">${p.condition}</span>
+                            <img src="${p.images[0]}" class="card-img-top product-img" alt="${p.name}">
+                            <div class="card-body d-flex flex-column">
+                                <span class="text-muted text-uppercase small fw-bold">${p.brand}</span>
+                                <h5 class="card-title fw-bold text-dark mb-1 product-title">${p.name}</h5>
+                                <p class="text-secondary small mb-3">Size: ${p.size}</p>
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="fs-5 fw-bold text-danger">Rp ${p.price.toLocaleString('id-ID')}</span>
+                                    <button class="btn btn-dark btn-sm px-3">Detail</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHTML;
+            });
+        }
+
+        // 3. FUNGSI NAVIGASI HALAMAN (Pindah Halaman Tanpa Reload)
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        let selectedProduct = null;
+
+        // 4. FUNGSI MEMBUKA & MENGISI DATA HALAMAN DETAIL
+        function openDetailPage(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            selectedProduct = product;
+
+            // Isi Data Teks
+            document.getElementById('detailBrand').textContent = product.brand;
+            document.getElementById('detailName').textContent = product.name;
+            document.getElementById('detailPrice').textContent = `Rp ${product.price.toLocaleString('id-ID')}`;
+            document.getElementById('detailSize').textContent = product.size;
+            document.getElementById('detailInsole').textContent = product.insole;
+            document.getElementById('detailBox').textContent = product.box;
+            document.getElementById('detailMinus').textContent = product.minus;
+            
+            // Set Badge Kondisi
+            const badge = document.getElementById('detailBadge');
+            badge.textContent = product.condition;
+            badge.className = `badge fs-6 ${product.badgeClass}`;
+
+            // Gambar Utama & Galeri Thumbnail
+            const mainImg = document.getElementById('detailMainImg');
+            mainImg.src = product.images[0];
+
+            const thumbContainer = document.getElementById('detailThumbnails');
+            thumbContainer.innerHTML = '';
+            
+            product.images.forEach((imgUrl, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-3';
+                col.innerHTML = `<img src="${imgUrl}" class="img-fluid thumbnail-img border shadow-sm w-100" onclick="changeMainImage('${imgUrl}')">`;
+                thumbContainer.appendChild(col);
+            });
+
+            // Tampilkan halaman detail
+            showPage('detailPage');
+        }
+
+        function addToCartAndGo() {
+            if (!selectedProduct) return;
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === selectedProduct.id);
+
+            if (existingItem) {
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+            } else {
+                cart.push({
+                    id: selectedProduct.id,
+                    name: selectedProduct.name,
+                    brand: selectedProduct.brand,
+                    price: selectedProduct.price,
+                    img: selectedProduct.images[0],
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'cart.html';
+        }
+
+        // Fungsi mengganti gambar utama saat thumbnail diklik
+        function changeMainImage(url) {
+            document.getElementById('detailMainImg').src = url;
+        }
+
+        // 5. FITUR SEARCH & FILTER (Real-time di Halaman Home)
+        function filterProducts() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const selectedBrand = document.getElementById('brandFilter').value;
+            const productItems = document.querySelectorAll('.product-item');
+            let visibleCount = 0;
+
+            productItems.forEach(item => {
+                const title = item.querySelector('.product-title').textContent.toLowerCase();
+                const itemBrand = item.getAttribute('data-brand');
+
+                const matchesSearch = title.includes(searchText);
+                const matchesBrand = (selectedBrand === 'all' || itemBrand === selectedBrand);
+
+                if (matchesSearch && matchesBrand) {
+                    item.classList.remove('d-none');
+                    visibleCount++;
+                } else {
+                    item.classList.add('d-none');
+                }
+            });
+
+            const noMatchMessage = document.getElementById('noMatchMessage');
+            if (visibleCount === 0) {
+                noMatchMessage.classList.remove('d-none');
+            } else {
+                noMatchMessage.classList.add('d-none');
+            }
+        }
+
+        // Event Listener & Inisialisasi awal saat web dimuat
+        document.getElementById('searchInput').addEventListener('input', filterProducts);
+        document.getElementById('brandFilter').addEventListener('change', filterProducts);
+        
+        // Jalankan render katalog saat pertama kali dibuka
+        renderKatalog();
+    </script>
+</body>
+</html>
