@@ -44,25 +44,66 @@
     </div>
 
     <script>
-        // Data Dummy Terbaca Lewat Parameter URL (?id=X)
+        // Data Dummy Terbaca Lewat Parameter URL (?id=p1, p2, dst.)
         const products = {
-            "1": { name: "Sport Neo Red", price: 850000, desc: "Sepatu lari premium warna merah menyala dengan bantalan empuk.", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500" },
-            "2": { name: "Classic Casual Sneaker", price: 720000, desc: "Sneaker estetik dengan bahan premium leather yang sangat awet.", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500" }
+            "p1": {
+                name: "Sepatu Preloved Outdoor",
+                price: 450000,
+                desc: "Sepatu Nike preloved outdoor, bersih dan siap pakai. Kondisi masih sangat bagus dengan insole nyaman.",
+                img: "image/s1.jpeg"
+            },
+            "p2": {
+                name: "Casual Black Red Sepatu",
+                price: 320000,
+                desc: "Sepatu Ventela casual hitam merah, cocok untuk gaya street dan sehari-hari.",
+                img: "image/s3.jpeg"
+            },
+            "p3": {
+                name: "Nike Toki Low Gray Black",
+                price: 380000,
+                desc: "Sepatu Nike Toki low abu-abu hitam, like new dengan kondisi rapi dan nyaman dipakai.",
+                img: "image/s4.jpeg"
+            },
+            "p4": {
+                name: "Casual Beige Slip On Sepatu",
+                price: 550000,
+                desc: "Sepatu slip on beige Nike, ringan dan mudah dipakai dengan gaya santai.",
+                img: "image/s5.jpeg"
+            },
+            "p5": {
+                name: "Converse Run Star Legacy CX",
+                price: 450000,
+                desc: "Sepatu Converse Run Star Legacy CX, tampilan klasik dengan sentuhan vintage.",
+                img: "image/ssptu.jpg"
+            },
+            "p6": {
+                name: "Staccato Espadrille Slip On",
+                price: 100000,
+                desc: "Sepatu Staccato espadrille slip on, ringan dan nyaman untuk tampilan kasual.",
+                img: "image/sepatu st.jpg"
+            }
         };
 
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id') || "1";
+        const productId = urlParams.get('id');
         const selectedProduct = products[productId];
 
-        if(selectedProduct) {
+        if (selectedProduct) {
             document.getElementById("prodImg").src = selectedProduct.img;
             document.getElementById("prodName").innerText = selectedProduct.name;
             document.getElementById("prodPrice").innerText = "Rp " + selectedProduct.price.toLocaleString('id-ID');
             document.getElementById("prodDesc").innerText = selectedProduct.desc;
+        } else {
+            document.getElementById("prodName").innerText = "Produk tidak ditemukan";
+            document.getElementById("prodPrice").innerText = "";
+            document.getElementById("prodDesc").innerText = "Maaf, detail produk tidak tersedia. Kembali ke katalog untuk memilih produk lain.";
+            document.getElementById("addCartBtn").disabled = true;
         }
 
         // Logic Add To Cart
         document.getElementById("addCartBtn").addEventListener("click", function() {
+            if (!selectedProduct) return;
+
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             cart.push(selectedProduct);
             localStorage.setItem("cart", JSON.stringify(cart));
