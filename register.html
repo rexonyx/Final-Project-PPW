@@ -161,17 +161,6 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(90deg, #111111, #1f2937);">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-uppercase" href="FinalProjectPPW.html">Second<span class="text-warning">Kick</span></a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="FinalProjectPPW.html">Home</a>
-                <a class="nav-link" href="products.html">Products</a>
-                <a class="nav-link" href="cart.html">Cart</a>
-                <a class="nav-link" href="tentang.html">Tentang Kami</a>
-            </div>
-        </div>
-    </nav>
 
     <div class="register-container">
         <div class="register-card">
@@ -196,7 +185,7 @@
 
                 <div class="input-group-custom">
                     <label for="whatsapp" class="form-label">Nomor WhatsApp</label>
-                    <input type="tel" id="whatsapp" class="form-control" placeholder="081234567xxx" required>
+                    <input type="tel" id="whatsapp" class="form-control" placeholder="081234567xxx" inputmode="numeric" pattern="[0-9]+" required>
                 </div>
 
                 <div class="input-group-custom">
@@ -223,9 +212,7 @@
             </div>
             
         </div>
-    </div>
-
-    <script>
+    </div> <script>
         const registerForm = document.getElementById('registerForm');
         const password = document.getElementById('password');
         const konfirmasiPassword = document.getElementById('konfirmasiPassword');
