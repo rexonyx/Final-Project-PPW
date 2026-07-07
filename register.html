@@ -3,9 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabung Skena - Thrift Store</title>
+    <title>Register - SecondKick</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #f8f9fa; /* Abu-abu super terang clean */
+            --text-dark: #111111; /* Hitam pekat modern */
+            --text-muted: #666666;
+            --accent: #2563eb; /* Biru elektrik khas modern utility */
+            --card-border: #e5e7eb;
+        }
+
+        body {
+            background-color: rgb(99, 19, 19);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 460px;
+            padding: 20px;
+        }
+
+        .register-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+        }
+
+        .brand-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.5px;
+            color: var(--text-dark);
+        }
+
+        .sub-title {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Form Styling */
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .form-control {
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 11px 16px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: var(--text-dark);
+            box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.05);
+            color: var(--text-dark);
+        }
+
+        /* Button Styling */
+        .btn-submit {
+            background-color: var(--text-dark);
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: #222222;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Alert Styling */
+        .alert {
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 10px 16px;
+            border: none;
+        }
+        .alert-danger {
+            background-color: #fef2f2;
+            color: #ef4444;
+        }
+        .alert-success {
+            background-color: #f0fdf4;
+            color: #22c55e;
+        }
+
+        .login-link {
+            color: var(--text-dark);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1.5px solid var(--text-dark);
+            transition: all 0.15s ease;
+        }
+
+        .login-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 32px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
