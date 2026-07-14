@@ -82,25 +82,30 @@
     </main>
 
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const errorBox = document.getElementById('errorBox');
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorBox = document.getElementById('errorBox');
 
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); 
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Menahan refresh halaman
 
-            const emailBenar = "admin@thrift.com";
-            const passwordBenar = "thrift123";
+        // Data akun sementara (karena tidak pakai database)
+        const emailBenar = "admin@gmail.com";
+        const passwordBenar = "trift123";
 
-            if (emailInput.value === emailBenar && passwordInput.value === passwordBenar) {
-                alert("Login Sukses! Selamat berbelanja.");
-            } else {
-                // Di Bootstrap 5, menyembunyikan/memunculkan elemen pakai kelas 'd-none'
-                errorBox.classList.remove('d-none');
-            }
-        });
-    </script>
+        if (emailInput.value === emailBenar && passwordInput.value === passwordBenar) {
+            alert("Login Sukses! Selamat berbelanja.");
+            
+            // PINDAH KE HALAMAN UTAMA (Sesuaikan nama filenya)
+            window.location.href = "FinalProjectPPW.html"; 
+            
+        } else {
+            // Jika salah, kotak merah dimunculkan
+            errorBox.classList.remove('d-none');
+        }
+    });
+</script>
 
 </body>
 </html>
